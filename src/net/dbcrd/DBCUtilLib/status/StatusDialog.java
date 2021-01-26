@@ -1,0 +1,288 @@
+/*
+ * Copyright (c) 2015, Daniel B. Curtis <dbcurtis@dbcrd.net>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+/*
+ * StatusDialog.java
+ *
+ * Created on Aug 12, 2010, 9:08:48 AM
+ */
+package net.dbcrd.DBCUtilLib.status;
+
+import java.util.logging.Logger;
+import net.dbcrd.DBCUtilLib.ClassPreamble;
+import net.dbcrd.DBCUtilLib.WindowPlacementUtil;
+
+/**
+ * <strong>Displays a status dialog that is controlled by MyStatus. </strong>
+ *
+ * @see MyStatus
+ */
+@ClassPreamble(
+        author = "Daniel B. Curtis",
+        date = "Aug 2010 ",
+        currentRevision = 2,
+        lastModified = "06/27/2015",
+        copyright = "(C) 2010 by Daniel B. Curtis, all rights reserved",
+        lastModifiedBy = "Daniel B. Curtis"
+)
+
+public class StatusDialog extends javax.swing.JFrame {
+
+    /**
+     *
+     */
+    private static final Logger THE_LOGGER = Logger.
+            getLogger(StatusDialog.class.
+                    getName());
+
+    /**
+     *
+     */
+    static final long serialVersionUID = 51985892598152L;
+
+    //private static final Preferences PREFS=Preferences.useNodeForPackage(StatusDialog.class);
+    /** A return status code - returned if Cancel button has been pressed */
+    public static final int RET_CANCEL = 0;
+    /** A return status code - returned if OK button has been pressed */
+    public static final int RET_OK = 1;
+    // static StatusDialog dialog=null;
+
+    /**
+     *
+     */
+    private final static String ORG = "STATUS334";
+
+    /**
+     *
+     */
+    final transient WindowPlacementUtil<StatusDialog> wpu;
+
+    /**
+     *
+     */
+    private boolean aborting = false;
+  //  private Thread callingThread = null;
+
+    /**
+     *
+     */
+    private static StatusDialog dialog;
+
+    /**
+     *
+     */
+    private boolean running = false;
+
+    /**
+     *
+     * @return a boolean true if the StatusDialog is running.
+     */
+    public boolean isRunning() {
+        return running;
+    }
+
+    /**
+     *
+     * @return a boolean, true if the StatusDialog is aborting
+     */
+    boolean isAborting() {
+        return aborting;
+    }
+//    /**
+//     * Receives messages that are to be displayed in the message section of the status dialog. These messages are appended to
+//     * {@code TEXT} This blocking queue can be used by an instance of Status if Status needs multiple displays.
+//     */
+//    private final BlockingQueue<String> blockingQueue = new LinkedBlockingQueue<>();
+//
+//    /**
+//     *
+//     * @return
+//     */
+//    BlockingQueue<String> getBlockingQueue() {
+//        return blockingQueue;
+//    }
+
+    /**
+     *
+     * @param aborting a boolean if true causes the dialog to abort
+     */
+    private void setAborting(final boolean aborting) {
+        this.aborting = aborting;
+
+    }
+
+    /**
+     * Creates new StatusDialog, remembers the calling thread, and initializes the windows placement utility (wpu).
+     */
+    public StatusDialog() {
+        super();
+        initComponents();
+        wpu = new WindowPlacementUtil<>(this, ORG);
+        // callingThread = Thread.currentThread();
+    }
+
+    /**
+     * remembers the position of the window and disposes the window.
+     */
+    @Override
+    public void dispose() {
+        wpu.rememberPosition();
+        super.dispose();
+    }
+
+//    /**
+//     * Used to do {@code running=true;}
+//     *
+//     * @param vis a boolean
+//     */
+       /** {@inheritDoc } */
+    @Override
+    public void setVisible(boolean vis) {
+        super.setVisible(vis);
+        running = true;
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of
+     * this method is always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jPBPhaseProgress = new javax.swing.JProgressBar();
+        jPBTaskProgress = new javax.swing.JProgressBar();
+        abortButton = new javax.swing.JButton();
+        jScrollPane = new javax.swing.JScrollPane();
+        jTPLog = new javax.swing.JTextPane();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Status");
+
+        jLabel2.setText("Phase Progress");
+
+        jLabel1.setText("Task Progress");
+
+        abortButton.setText("Abort");
+        abortButton.setEnabled(false);
+        abortButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                abortButtonActionPerformed(evt);
+            }
+        });
+
+        jTPLog.setDoubleBuffered(true);
+        jScrollPane.setViewportView(jTPLog);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPBPhaseProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jPBTaskProgress, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)))
+                    .addComponent(abortButton))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPBPhaseProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPBTaskProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(abortButton)
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void abortButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abortButtonActionPerformed
+
+        setAborting(true);
+
+}//GEN-LAST:event_abortButtonActionPerformed
+
+    /**
+     * Selects Nimbus, instiantiates a StatusDialog, and invokes it.
+     *
+     * @param args a String[] the command line arguments args[0] can be "debug" to turn on any debugging (not used); args[1] if
+     * provided is a String that will be used to overwrite the window default title[
+     * @return a StatusDialog;
+     */
+    public static StatusDialog main(final String args[]) {
+        /* Set the Nimbus look and feel */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException |
+                IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            THE_LOGGER.log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        dialog = new StatusDialog();
+        if (null != args && null != args[1]) {
+            dialog.setTitle(args[1]);
+        }
+        dialog.jTPLog.setContentType("text/html");
+        java.awt.EventQueue.invokeLater(() -> {
+            dialog.wpu.getRememberedPosition();
+            dialog.setVisible(true);
+            dialog.setVisible(true);
+        });
+        return dialog;
+    }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    protected javax.swing.JButton abortButton;
+    protected javax.swing.JLabel jLabel1;
+    protected javax.swing.JLabel jLabel2;
+    javax.swing.JProgressBar jPBPhaseProgress;
+    javax.swing.JProgressBar jPBTaskProgress;
+    protected javax.swing.JScrollPane jScrollPane;
+    javax.swing.JTextPane jTPLog;
+    // End of variables declaration//GEN-END:variables
+}
